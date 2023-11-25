@@ -1,7 +1,38 @@
 import storageService from '@/scripts/storage.service'
 
+export interface homework {
+  id: number
+  dateAdded: Date
+  dateDue: Date
+  text: string
+  remark: string
+  teacher: string
+  subject: string
+  completed: boolean
+
+/*  constructor(
+    id: number,
+    dateAdded: Date,
+    dateDue: Date,
+    text: string,
+    remark: string,
+    teacher: string,
+    subject: string,
+    completed: boolean
+  ) {
+    this.id = id
+    this.dateAdded = dateAdded
+    this.dateDue = dateDue
+    this.text = text
+    this.remark = remark
+    this.teacher = teacher
+    this.subject = subject
+    this.completed = completed
+  }*/
+}
+
 class ApiService {
-  private baseUrl: string
+  private readonly baseUrl: string
 
   constructor(apiUrl: string) {
     this.baseUrl = apiUrl
@@ -21,13 +52,55 @@ class ApiService {
       if (response.status === 403) {
         throw new Error('403')
       }
-
-
     } catch (e) {
-
       console.error('Error fetching data: ', e)
-      throw e;
+      throw e
+    }
+  }
 
+  async all(): Promise<homework[]> {
+    const authorization = storageService.retrieve_credentials()
+
+    if (authorization === null) {
+      throw new Error('404')
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}/homework/all`, {
+        method: 'GET',
+        headers: {
+          Authorization: authorization[1]
+        }
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+
+      const data: homework[] = await response.json()
+
+      const homeworks: homework[] = []
+
+      data.forEach((element) => {
+
+        const newHomework: homework = {
+            id: element.id,
+            dateAdded: new Date(element.dateAdded),
+            dateDue: new Date(element.dateDue),
+            text: element.text,
+            remark: element.remark,
+            teacher: element.teacher,
+            subject: element.subject,
+            completed: element.completed
+        }
+
+        homeworks.push(newHomework)
+      })
+
+      return homeworks
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
     }
   }
 }

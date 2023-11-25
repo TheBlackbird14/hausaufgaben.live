@@ -1,109 +1,103 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 
-import {ref} from "vue";
+import apiService from '@/scripts/api.service'
+import storageService from '@/scripts/storage.service'
 
-import apiService from "@/scripts/api.service";
-import storageService from "@/scripts/storage.service";
+const password_visible = ref(false)
 
-const warning_text_visible = ref(false)
+const iconClass = ref("visible-icon bi bi-eye")
+const passwordType = ref("password")
+function togglePassword() {
 
-const username = ref("");
-
-const usernameAttrs = ref({
-  type: "text",
-  placeholder: "Benutzername",
-  name: "username",
-  id: "username",
-  required: true,
-  autocomplete: "username",
-  autofocus: true
-})
-
-const password = ref("");
-
-const passwordAttrs = ref({
-  type: "password",
-  placeholder: "Passwort",
-  name: "password",
-  id: "password",
-  required: true,
-  autocomplete: "current-password"
-})
-
-function login() {
-
-  warning_text_visible.value = false
-
-  console.log("button clicked")
-
-  if (username.value != "" && password.value != "") {
-    apiService.load(username.value, password.value)
-        .then(() => {
-
-          storageService.store_credentials(username.value, password.value)
-
-          location.reload()
-
-        })
-        .catch((error) => {
-          if (error.message === '403') {
-            warning_text_visible.value = true
-          }
-
-        })
+  password_visible.value = !password_visible.value
+  if (password_visible.value) {
+    passwordType.value = "text"
+    iconClass.value = 'visible-icon bi bi-eye-slash'
+  } else {
+    passwordType.value = "password"
+    iconClass.value = 'visible-icon bi bi-eye'
   }
 
 }
 
+const username = ref('')
 
+const password = ref('')
+
+const usernameClass = ref("form-control")
+const passwordClass = ref("form-control")
+
+function login() {
+
+  usernameClass.value = "form-control"
+  passwordClass.value = "form-control"
+
+  if (username.value === '') {
+    usernameClass.value = "form-control is-invalid"
+    if (password.value === '') {
+      passwordClass.value = "form-control is-invalid"
+    }
+    return;
+
+  }
+  if (password.value === '') {
+    passwordClass.value = "form-control is-invalid"
+    return;
+
+  }
+
+  console.log('button clicked')
+
+  if (username.value != '' && password.value != '') {
+    apiService
+      .load(username.value, password.value)
+      .then(() => {
+        storageService.store_credentials(username.value, password.value)
+
+        location.reload()
+      })
+      .catch((error) => {
+        if (error.message === '403') {
+          usernameClass.value = "form-control is-invalid"
+          passwordClass.value = "form-control is-invalid"
+        }
+      })
+  }
+}
 </script>
 
 <template>
+  <form>
+    <div class="form-floating mb-3">
+      <input v-model="username" type="text" :class="usernameClass" id="floatingUsername" placeholder="username">
+      <label for="floatingUsername">Benutzername</label>
+    </div>
+    <div class="input-group mb-3">
+      <div class="form-floating flex-grow-1" >
+        <input v-model="password" :type="passwordType" :class="passwordClass" id="floatingPassword" placeholder="password" @keyup.enter="login">
+        <label for="floatingPassword" class="label">Passwort</label>
+      </div>
+      <span class="input-group-text" :class="iconClass" @click="togglePassword"></span>
+    </div>
 
-  <div class="passwd-container">
-    <p :hidden="!warning_text_visible">Benutzername oder Passwort falsch</p>
-    <input v-bind="usernameAttrs" v-model="username" class="username">
-    <input v-bind="passwordAttrs" v-model="password" class="password">
-    <button @click="login" class="login-button">Anmelden</button>
-  </div>
+    <button type="button" class="btn btn-primary login-button" @click="login">Login</button>
 
+  </form>
 </template>
 
 <style scoped>
 
-.passwd-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.visible-icon {
+  cursor: pointer;
 }
 
-.username {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  width: 20rem;
-  font-size: 1.2rem;
-}
-
-.password {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  width: 20rem;
-  font-size: 1.2rem;
+.label {
+  user-select: none;
 }
 
 .login-button {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  width: 20rem;
-  font-size: 1.2rem;
-  background-color: #ccc;
+  width: 100%;
 }
 
 </style>

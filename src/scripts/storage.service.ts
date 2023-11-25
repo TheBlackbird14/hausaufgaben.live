@@ -13,12 +13,6 @@ class StorageService {
     const encoder = new TextEncoder()
     return encoder.encode(str)
   }
-
-  private uint8ArrayToString(arr: Uint8Array): string {
-    const decoder = new TextDecoder()
-    return decoder.decode(arr)
-  }
-
   private base64ToUint8Array(base64: string): Uint8Array {
     const binaryString = atob(base64)
     const len = binaryString.length
@@ -78,6 +72,7 @@ class StorageService {
     localStorage.setItem('credentials', encrypted_credentials)
   }
 
+  /* returns [username, credentials] or null */
   retrieve_credentials(): [string, string] | null {
     const username = localStorage.getItem('username')
     const credentials = localStorage.getItem('credentials')
@@ -87,7 +82,6 @@ class StorageService {
     } else {
       return [username, credentials]
     }
-
   }
 }
 

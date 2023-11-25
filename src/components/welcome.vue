@@ -1,18 +1,13 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-
-  <header class="welcome-header" >
-    <img src="src/assets/UntisHomeworkLogo.png" class="logo" alt="logo"/>
+  <header class="welcome-header">
+    <img src="/src/assets/UntisHomeworkLogo.png" class="logo" alt="logo" />
     <h1>Webuntis Hausaufgaben Aloisiuskolleg</h1>
   </header>
-
 </template>
 
 <style scoped>
-
 .welcome-header {
   display: flex;
   flex-direction: row;
@@ -37,5 +32,4 @@
   height: 10vmin;
   pointer-events: none;
 }
-
 </style>
