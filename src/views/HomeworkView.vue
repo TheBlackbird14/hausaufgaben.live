@@ -1,11 +1,12 @@
 <script setup lang="ts">
-
+import HomeworkHeader from '@/components/homeworkHeader.vue'
+import HomeworkList from '@/components/homeworkList.vue'
 </script>
 
 <template>
-<p>Homework</p>
+  <homework-header></homework-header>
+
+  <HomeworkList></HomeworkList>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
