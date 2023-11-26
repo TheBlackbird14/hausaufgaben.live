@@ -44,7 +44,6 @@ function login() {
   if (password.value === '') {
     passwordClass.value = "form-control is-invalid"
     return;
-
   }
 
   console.log('button clicked')
@@ -53,6 +52,9 @@ function login() {
     apiService
       .load(username.value, password.value)
       .then(() => {
+
+        console.log('login successful')
+
         storageService.store_credentials(username.value, password.value)
 
         location.reload()
@@ -68,7 +70,7 @@ function login() {
 </script>
 
 <template>
-  <form>
+  <form class="text-center">
     <div class="form-floating mb-3">
       <input v-model="username" type="text" :class="usernameClass" id="floatingUsername" placeholder="username">
       <label for="floatingUsername">Benutzername</label>
@@ -76,12 +78,12 @@ function login() {
     <div class="input-group mb-3">
       <div class="form-floating flex-grow-1" >
         <input v-model="password" :type="passwordType" :class="passwordClass" id="floatingPassword" placeholder="password" @keyup.enter="login">
-        <label for="floatingPassword" class="label">Passwort</label>
+        <label for="floatingPassword" class="user-select-none">Passwort</label>
       </div>
       <span class="input-group-text" :class="iconClass" @click="togglePassword"></span>
     </div>
 
-    <button type="button" class="btn btn-primary login-button" @click="login">Login</button>
+    <button type="button" class="btn btn-primary login-button btn-lg mt-4" @click="login">Login</button>
 
   </form>
 </template>
@@ -92,12 +94,8 @@ function login() {
   cursor: pointer;
 }
 
-.label {
-  user-select: none;
-}
-
 .login-button {
-  width: 100%;
+  width: 80%;
 }
 
 </style>

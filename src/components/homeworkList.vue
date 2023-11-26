@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import HomeworkListItem from '@/components/homeworkListItem.vue'
 import {onBeforeMount, ref} from 'vue'
-import apiService, {homework} from '@/scripts/api.service'
+import apiService from '@/scripts/api.service'
+import type {homework} from '@/scripts/api.service'
 
 const uncompleted_homework: homework[] = []
 const completed_homework: homework[] = []
@@ -11,6 +12,11 @@ let latest_uncompleted_date: Date = new Date();
 let latest_completed_date: Date = new Date();
 
 let dataIsHere = ref(false)
+
+function logout() {
+  localStorage.removeItem('credentials')
+  localStorage.removeItem('username')
+}
 
 onBeforeMount(() => {
 
@@ -74,11 +80,13 @@ function getWeekDay(homeworkToCheck: homework) {
 
 <template>
 
+  <!-- Spinner using bootstrap-->
   <div v-if="!dataIsHere" class="d-flex justify-content-center align-items-center" style="height: 80vh">
     <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
+
   <div v-else>
 
     <div class="uncompleted">
@@ -103,7 +111,7 @@ function getWeekDay(homeworkToCheck: homework) {
         </div>
       </div>
 
-      <h2 v-if="old_entries.length">Alte Einträge</h2>
+      <h2 v-if="old_entries.length" class="day-title">Alte Einträge</h2>
 
       <div v-for="(homeworkEntry, key) in old_entries" :key="key">
         <HomeworkListItem :homework-entry="homeworkEntry"></HomeworkListItem>
@@ -112,6 +120,8 @@ function getWeekDay(homeworkToCheck: homework) {
     </div>
 
   </div>
+
+  <button class="btn btn-danger" @click="logout">Logout</button>
 
 </template>
 
