@@ -39,13 +39,14 @@ class ApiService {
   }
 
   async load(username: string, password: string) {
+
     const authorization = await storageService.encryptString(username, password)
 
     try {
       const response = await fetch(`${this.baseUrl}/homework/load`, {
         method: 'GET',
         headers: {
-          Authorization: authorization
+          Authorization: authorization,
         }
       })
 
@@ -62,7 +63,7 @@ class ApiService {
     const authorization = storageService.retrieve_credentials()
 
     if (authorization === null) {
-      throw new Error('404')
+      throw new Error('403')
     }
 
     try {
@@ -103,6 +104,39 @@ class ApiService {
       throw e
     }
   }
+
+  async updateHomework(id: number, completed: boolean) {
+
+    const authorization = storageService.retrieve_credentials()
+
+    if (authorization === null) {
+      throw new Error('403')
+    }
+
+    const options = new Headers({
+      'Authorization': authorization[1],
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    })
+
+    try {
+      const response = await fetch(`${this.baseUrl}/homework/${id}`, {
+        method: 'PUT',
+        headers: options,
+        body: JSON.stringify({
+          completed: completed
+        })
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
+    }
+  }
+
 }
 
 const apiService = new ApiService('https://api.hausaufgaben.live/api')

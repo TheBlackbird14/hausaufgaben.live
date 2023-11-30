@@ -2,6 +2,7 @@
 import type {PropType} from "vue";
 import type {homework} from "@/scripts/api.service";
 import {computed} from "vue";
+import apiService from "@/scripts/api.service";
 
 const props = defineProps({
   homeworkEntry: {
@@ -11,12 +12,16 @@ const props = defineProps({
 })
 
 const divClass = computed(() => {
+
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   if (props.homeworkEntry.completed) {
     return "completed"
   } else {
-    if (props.homeworkEntry.dateDue.getDate() === new Date().getDate()) {
+    if (props.homeworkEntry.dateDue.getDate() === tomorrow.getDate()) {
       return "dueTomorrow"
-    } else if (props.homeworkEntry.dateDue < new Date()) {
+    } else if (props.homeworkEntry.dateDue <= new Date()) {
       return "dueInPast"
     } else {
       return "dueInFuture"
@@ -24,17 +29,46 @@ const divClass = computed(() => {
   }
 })
 
+const buttonClass = computed(() => {
+  if (props.homeworkEntry.completed) {
+    return "btn-danger"
+  } else {
+    return "btn-success"
+  }
+})
+
+const buttonText = computed(() => {
+  if (props.homeworkEntry.completed) {
+    return "Nicht abschließen"
+  } else {
+    return "Abschließen"
+  }
+})
+
+function complete() {
+
+  apiService.updateHomework(props.homeworkEntry?.id, !props.homeworkEntry?.completed)
+
+}
+
 </script>
 
 <template>
 
-  <div class="wrapper" :class="divClass">
+  <div class="d-flex justify-content-between align-items-center mb-3 align-middle list-item" :class="divClass" >
 
-    <h1 class="subject">{{homeworkEntry.subject}}</h1>
-
-    <h3 class="teacher">{{homeworkEntry.teacher}}</h3>
-
-    <p class="description">{{homeworkEntry.text}}</p>
+    <div class="p-2 col-sm-2">
+      <h1>{{ homeworkEntry.subject }}</h1>
+    </div>
+    <div class="p-2 col-sm-2">
+      <h2>{{ homeworkEntry.teacher }}</h2>
+    </div>
+    <div class="p-2 flex-lg-grow-1">
+      <p class="fs-6">{{ homeworkEntry.text }}</p>
+    </div>
+    <div class="p-2 col-sm-2">
+      <button class="btn btn-lg" :class="buttonClass" @click="complete">{{ buttonText }}</button>
+    </div>
 
   </div>
 
@@ -42,24 +76,14 @@ const divClass = computed(() => {
 
 <style scoped>
 
-* {
+.list-item {
+  border-radius: 10px;
+  margin: 2vh 1vw;
+  padding: 1vw;
+}
+
+.list-item > div > *{
   margin: 0;
-  padding: 0;
-}
-
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr .8fr 4fr 1.5fr .5fr .2fr;
-  grid-template-rows: 0.5fr;
-  grid-column-gap: 5vw;
-  align-items: center;
-  border: 1px solid lightgray;
-  padding: 4vh;
-  margin: .8vw;
-}
-
-* {
-  font-family: "Helvetica Neue", serif;
 }
 
 .dueInFuture {
