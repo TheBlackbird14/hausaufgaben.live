@@ -2,11 +2,11 @@
 import HomeworkListItem from '@/components/homeworkListItem.vue'
 import {onBeforeMount, ref} from 'vue'
 import apiService from '@/scripts/api.service'
-import type {homework} from '@/scripts/api.service'
+import type {homework} from '@/scripts/types/homework.interface'
 
-const uncompleted_homework: homework[] = []
-const completed_homework: homework[] = []
-const old_entries: homework[] = []
+let dataIsHere = ref(false)
+
+defineExpose({ dataIsHere })
 
 let latest_uncompleted_date: Date = new Date();
 let latest_completed_date: Date = new Date();

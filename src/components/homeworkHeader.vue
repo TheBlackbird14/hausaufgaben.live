@@ -1,4 +1,7 @@
 <script setup lang="ts">
+
+const emit = defineEmits(['toggleSidebar'])
+
 </script>
 
 <template>
@@ -13,10 +16,13 @@
     <div class="p-2 col-sm-2">
       <button class="btn btn-success btn-lg">Hausaufgabe erstellen</button>
     </div>
-    <div class="p-2 col-sm-1">
-      <i class="bi bi-list icon" style="font-size: 250%"></i>
+
+    <div class="p-2 me-1">
+      <i class="bi bi-list icon" @click="emit('toggleSidebar')"></i>
     </div>
+
   </header>
+
 
 </template>
 
@@ -24,6 +30,7 @@
 
 .icon {
   cursor: pointer;
+  font-size: 250%
 }
 
 </style>
