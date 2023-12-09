@@ -1,35 +1,6 @@
 import storageService from '@/scripts/storage.service'
+import type { homework } from '@/scripts/types/homework.interface'
 
-export interface homework {
-  id: number
-  dateAdded: Date
-  dateDue: Date
-  text: string
-  remark: string
-  teacher: string
-  subject: string
-  completed: boolean
-
-/*  constructor(
-    id: number,
-    dateAdded: Date,
-    dateDue: Date,
-    text: string,
-    remark: string,
-    teacher: string,
-    subject: string,
-    completed: boolean
-  ) {
-    this.id = id
-    this.dateAdded = dateAdded
-    this.dateDue = dateDue
-    this.text = text
-    this.remark = remark
-    this.teacher = teacher
-    this.subject = subject
-    this.completed = completed
-  }*/
-}
 
 class ApiService {
   private readonly baseUrl: string
@@ -140,5 +111,6 @@ class ApiService {
 }
 
 const apiService = new ApiService('https://api.hausaufgaben.live/api')
+// const apiService = new ApiService('http://localhost:3000/api')
 
 export default apiService
