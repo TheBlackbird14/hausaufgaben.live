@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
-import type {homework} from "@/scripts/api.service";
+import type { homework } from "@/scripts/types/homework.interface";
 import {computed} from "vue";
 import apiService from "@/scripts/api.service";
 
