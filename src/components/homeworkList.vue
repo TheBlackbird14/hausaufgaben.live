@@ -111,7 +111,21 @@ function onChange(id: number, array: number) {
 
           if (!isDatePast(homeworkEntry)) {
             completed_homework.homeworkEntries.push(homeworkEntry)
+
+            completed_homework.homeworkEntries.sort((a: homework, b: homework) => {
+              return +new Date(a.dateDue) - +new Date(b.dateDue)
+            })
+
+          } else {
+            old_entries.homeworkEntries.push(homeworkEntry)
+
+            old_entries.homeworkEntries.sort((a: homework, b: homework) => {
+              return +new Date(a.dateDue) - +new Date(b.dateDue)
+            })
+
           }
+
+
 
           break;
 
@@ -125,6 +139,10 @@ function onChange(id: number, array: number) {
 
           uncompleted_homework.homeworkEntries.push(homeworkEntry)
 
+          uncompleted_homework.homeworkEntries.sort((a: homework, b: homework) => {
+            return +new Date(a.dateDue) - +new Date(b.dateDue)
+          })
+
           break;
 
     case 3: //old
@@ -136,6 +154,10 @@ function onChange(id: number, array: number) {
           homeworkEntry.completed = false
 
           uncompleted_homework.homeworkEntries.push(homeworkEntry)
+
+          uncompleted_homework.homeworkEntries.sort((a: homework, b: homework) => {
+            return +new Date(a.dateDue) - +new Date(b.dateDue)
+          })
 
           break;
 
