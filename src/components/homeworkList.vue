@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeworkListItem from '@/components/homeworkListItem.vue'
-import { onBeforeMount, reactive, ref } from 'vue'
+import {onBeforeMount, reactive, ref} from 'vue'
 import apiService from '@/scripts/api.service'
 import type {homework} from '@/scripts/types/homework.interface'
 
@@ -28,7 +28,10 @@ function logout() {
 }
 
 onBeforeMount(() => {
+  getHomework()
+})
 
+function getHomework() {
   apiService.all().then((response) => {
 
 
@@ -37,10 +40,12 @@ onBeforeMount(() => {
     })
 
     response.forEach((homework) => {
-      if (homework.completed) {
+      if (!homework.completed) {
+        uncompleted_homework.homeworkEntries.push(homework)
+      } else if (homework.dateDue > new Date()) {
         completed_homework.homeworkEntries.push(homework)
       } else {
-        uncompleted_homework.homeworkEntries.push(homework)
+        old_entries.homeworkEntries.push(homework)
       }
     })
 
@@ -48,8 +53,7 @@ onBeforeMount(() => {
     dataIsHere.value = true
 
   })
-
-})
+}
 
 function compareDate(homeworkToCheck: homework, completed: boolean) {
   if (completed) {
@@ -69,20 +73,75 @@ function compareDate(homeworkToCheck: homework, completed: boolean) {
   }
 }
 
-function isDatePast(homeworkToCheck: homework, completed: boolean) {
-  const isPast = homeworkToCheck.dateDue < new Date()
+function isDatePast(homeworkToCheck: homework) {
 
-  if (isPast && completed) {
-    old_entries.homeworkEntries.push(homeworkToCheck)
-  }
+  /* remnant of a painful search for a bug */
+  // if (isPast && completed) {
+  //   old_entries.homeworkEntries.push(homeworkToCheck)
+  // }
 
-  return isPast
+  return homeworkToCheck.dateDue < new Date()
 }
 
 function getWeekDay(homeworkToCheck: homework) {
   const weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
 
   return weekdays[homeworkToCheck.dateDue.getDay()]
+}
+
+/*
+id: number; The id of the entry
+array: number; the array it is in, uncompleted (1), completed (2) or old (3)
+
+ */
+function onChange(id: number, array: number) {
+
+  let index: number;
+  let homeworkEntry: homework;
+
+  switch (array) {
+
+    case 1: //uncompleted
+          index = uncompleted_homework.homeworkEntries.findIndex((homework) => homework.id === id)
+          homeworkEntry = uncompleted_homework.homeworkEntries[index]
+
+          uncompleted_homework.homeworkEntries.splice(index, 1)
+
+          homeworkEntry.completed = true
+
+          if (!isDatePast(homeworkEntry)) {
+            completed_homework.homeworkEntries.push(homeworkEntry)
+          }
+
+          break;
+
+    case 2: //completed
+          index = completed_homework.homeworkEntries.findIndex((homework) => homework.id === id)
+          homeworkEntry = completed_homework.homeworkEntries[index]
+
+          completed_homework.homeworkEntries.splice(index, 1)
+
+          homeworkEntry.completed = false
+
+          uncompleted_homework.homeworkEntries.push(homeworkEntry)
+
+          break;
+
+    case 3: //old
+          index = old_entries.homeworkEntries.findIndex((homework) => homework.id === id)
+          homeworkEntry = old_entries.homeworkEntries[index]
+
+          old_entries.homeworkEntries.splice(index, 1)
+
+          homeworkEntry.completed = false
+
+          uncompleted_homework.homeworkEntries.push(homeworkEntry)
+
+          break;
+
+  }
+
+
 }
 
 </script>
@@ -104,7 +163,7 @@ function getWeekDay(homeworkToCheck: homework) {
 
       <div v-for="(homeworkEntry, key) in uncompleted_homework.homeworkEntries" :key="key">
         <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">{{ getWeekDay(homeworkEntry) }}</h2>
-        <HomeworkListItem :homework-entry="homeworkEntry"></HomeworkListItem>
+        <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
       </div>
 
     </div>
@@ -114,16 +173,16 @@ function getWeekDay(homeworkToCheck: homework) {
       <h1>Abgeschlossen</h1>
 
       <div v-for="(homeworkEntry, key) in completed_homework.homeworkEntries" :key="key">
-        <div v-if="!isDatePast(homeworkEntry, true)">
+        <div v-if="!isDatePast(homeworkEntry)">
           <h2 v-if="compareDate(homeworkEntry, true)" class="day-title">{{ getWeekDay(homeworkEntry) }}</h2>
-          <HomeworkListItem :homework-entry="homeworkEntry"></HomeworkListItem>
+          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
         </div>
       </div>
 
-      <h2 v-if="old_entries.length" class="day-title">Alte Einträge</h2>
+      <h2 v-if="old_entries.homeworkEntries.length" class="day-title">Alte Einträge</h2>
 
       <div v-for="(homeworkEntry, key) in old_entries.homeworkEntries" :key="key">
-        <HomeworkListItem :homework-entry="homeworkEntry"></HomeworkListItem>
+        <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
       </div>
 
     </div>

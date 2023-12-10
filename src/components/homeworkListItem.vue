@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {PropType} from "vue";
+import type { PropType } from "vue";
 import type { homework } from "@/scripts/types/homework.interface";
 import {computed} from "vue";
 import apiService from "@/scripts/api.service";
@@ -10,6 +10,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const emit = defineEmits(['update'])
 
 const divClass = computed(() => {
 
@@ -49,6 +51,20 @@ function complete() {
 
   apiService.updateHomework(props.homeworkEntry?.id, !props.homeworkEntry?.completed)
 
+  let array: number;
+
+  if (!props.homeworkEntry.completed) {
+    array = 1
+  } else if (props.homeworkEntry.completed && props.homeworkEntry?.dateDue > new Date()) {
+    array = 2
+  } else {
+    array = 3
+  }
+
+  console.log(array)
+
+  emit('update', props.homeworkEntry?.id, array)
+
 }
 
 </script>
@@ -66,9 +82,13 @@ function complete() {
     <div class="p-2 flex-lg-grow-1">
       <p class="fs-6">{{ homeworkEntry.text }}</p>
     </div>
-    <div class="p-2 col-sm-2">
+    <div class="p-2 col-sm-2 text-center">
       <button class="btn btn-lg" :class="buttonClass" @click="complete">{{ buttonText }}</button>
     </div>
+    <div class="p-2  text-center" :class="{ hidden: props.homeworkEntry?.id > 0}">
+      <i class="bi bi-trash3"></i>
+    </div>
+
 
   </div>
 
@@ -101,5 +121,10 @@ function complete() {
 .completed {
   background-color: rgba(100, 252, 100, 0.7);
 }
+
+.hidden {
+  visibility: hidden;
+}
+
 
 </style>
