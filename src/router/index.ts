@@ -7,6 +7,11 @@ const router = createRouter({
       path: '/',
       name: 'Homework',
       component: () => import('../views/HomeworkView.vue')
+    },
+    {
+      path: '/new',
+      name: 'Neue Hausaufgabe',
+      component: () => import('../views/CreateHomeworkView.vue')
     }
   ]
 })
