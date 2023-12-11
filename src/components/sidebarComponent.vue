@@ -60,7 +60,7 @@ const emit = defineEmits(['toggle', 'reload'])
         </div>
       </div>
 
-      <!--      <theme-button />-->
+            <theme-button />
     </div>
   </body>
 </template>
