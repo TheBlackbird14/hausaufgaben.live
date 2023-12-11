@@ -29,5 +29,4 @@ import enterLogin from '../components/enterLogin.vue'
     grid-template-rows: 1fr 1fr;
   }
 }
-
 </style>

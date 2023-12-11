@@ -1,7 +1,6 @@
 import storageService from '@/scripts/storage.service'
 import type { homework } from '@/scripts/types/homework.interface'
 
-
 class ApiService {
   private readonly baseUrl: string
 
@@ -10,14 +9,13 @@ class ApiService {
   }
 
   async load(username: string, password: string) {
-
     const authorization = await storageService.encryptString(username, password)
 
     try {
       const response = await fetch(`${this.baseUrl}/homework/load`, {
         method: 'GET',
         headers: {
-          Authorization: authorization,
+          Authorization: authorization
         }
       })
 
@@ -54,16 +52,15 @@ class ApiService {
       const homeworks: homework[] = []
 
       data.forEach((element) => {
-
         const newHomework: homework = {
-            id: element.id,
-            dateAdded: new Date(element.dateAdded),
-            dateDue: new Date(element.dateDue),
-            text: element.text,
-            remark: element.remark,
-            teacher: element.teacher,
-            subject: element.subject,
-            completed: element.completed
+          id: element.id,
+          dateAdded: new Date(element.dateAdded),
+          dateDue: new Date(element.dateDue),
+          text: element.text,
+          remark: element.remark,
+          teacher: element.teacher,
+          subject: element.subject,
+          completed: element.completed
         }
 
         homeworks.push(newHomework)
@@ -77,7 +74,6 @@ class ApiService {
   }
 
   async updateHomework(id: number, completed: boolean) {
-
     const authorization = storageService.retrieve_credentials()
 
     if (authorization === null) {
@@ -85,9 +81,9 @@ class ApiService {
     }
 
     const options = new Headers({
-      'Authorization': authorization[1],
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+      Authorization: authorization[1],
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
     })
 
     try {
@@ -107,7 +103,6 @@ class ApiService {
       throw e
     }
   }
-
 }
 
 const apiService = new ApiService('https://api.hausaufgaben.live/api')

@@ -66,7 +66,6 @@ class StorageService {
   /* now the good stuff */
 
   async store_credentials(username: string, password: string) {
-
     /* removing legacy cookies from old website */
     localStorage.removeItem('username')
     localStorage.removeItem('password')

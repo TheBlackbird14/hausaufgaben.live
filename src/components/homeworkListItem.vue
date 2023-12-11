@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
-import type { homework } from "@/scripts/types/homework.interface";
-import {computed} from "vue";
-import apiService from "@/scripts/api.service";
+import type { PropType } from 'vue'
+import type { homework } from '@/scripts/types/homework.interface'
+import { computed } from 'vue'
+import apiService from '@/scripts/api.service'
 
 const props = defineProps({
   homeworkEntry: {
@@ -14,44 +14,42 @@ const props = defineProps({
 const emit = defineEmits(['update'])
 
 const divClass = computed(() => {
-
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
 
   if (props.homeworkEntry.completed) {
-    return "completed"
+    return 'completed'
   } else {
     if (props.homeworkEntry.dateDue.getDate() === tomorrow.getDate()) {
-      return "dueTomorrow"
+      return 'dueTomorrow'
     } else if (props.homeworkEntry.dateDue <= new Date()) {
-      return "dueInPast"
+      return 'dueInPast'
     } else {
-      return "dueInFuture"
+      return 'dueInFuture'
     }
   }
 })
 
 const buttonClass = computed(() => {
   if (props.homeworkEntry.completed) {
-    return "btn-danger"
+    return 'btn-danger'
   } else {
-    return "btn-success"
+    return 'btn-success'
   }
 })
 
 const buttonText = computed(() => {
   if (props.homeworkEntry.completed) {
-    return "Nicht abschließen"
+    return 'Nicht abschließen'
   } else {
-    return "Abschließen"
+    return 'Abschließen'
   }
 })
 
 function complete() {
-
   apiService.updateHomework(props.homeworkEntry?.id, !props.homeworkEntry?.completed)
 
-  let array: number;
+  let array: number
 
   if (!props.homeworkEntry.completed) {
     array = 1
@@ -64,15 +62,14 @@ function complete() {
   console.log(array)
 
   emit('update', props.homeworkEntry?.id, array)
-
 }
-
 </script>
 
 <template>
-
-  <div class="d-flex justify-content-between align-items-center mb-3 align-middle list-item" :class="divClass" >
-
+  <div
+    class="d-flex justify-content-between align-items-center mb-3 align-middle list-item"
+    :class="divClass"
+  >
     <div class="p-2 col-sm-2">
       <h1>{{ homeworkEntry.subject }}</h1>
     </div>
@@ -85,24 +82,20 @@ function complete() {
     <div class="p-2 col-sm-2 text-center">
       <button class="btn btn-lg" :class="buttonClass" @click="complete">{{ buttonText }}</button>
     </div>
-    <div class="p-2  text-center" :class="{ hidden: props.homeworkEntry?.id > 0}">
+    <div class="p-2 text-center" :class="{ hidden: props.homeworkEntry?.id > 0 }">
       <i class="bi bi-trash3"></i>
     </div>
-
-
   </div>
-
 </template>
 
 <style scoped>
-
 .list-item {
   border-radius: 10px;
   margin: 2vh 1vw;
   padding: 1vw;
 }
 
-.list-item > div > *{
+.list-item > div > * {
   margin: 0;
 }
 
@@ -125,6 +118,4 @@ function complete() {
 .hidden {
   visibility: hidden;
 }
-
-
 </style>
