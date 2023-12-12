@@ -1,5 +1,6 @@
 import storageService from '@/scripts/storage.service'
 import type { homework } from '@/scripts/types/homework.interface'
+import type {createHomeworkDto} from "@/scripts/types/create-homework.dto";
 
 class ApiService {
   private readonly baseUrl: string
@@ -103,6 +104,68 @@ class ApiService {
       throw e
     }
   }
+
+  async deleteHomework(id: number) {
+    const authorization = storageService.retrieve_credentials()
+
+    if (authorization === null) {
+      throw new Error('403')
+    }
+
+    const options = new Headers({
+      Authorization: authorization[1],
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    })
+
+    try {
+      const response = await fetch(`${this.baseUrl}/homework/delete/${id}`, {
+        method: 'GET',
+        headers: options
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
+    }
+  }
+
+  async createHomework(homework: createHomeworkDto) {
+    const authorization = storageService.retrieve_credentials()
+
+    if (authorization === null) {
+      throw new Error('403')
+    }
+
+    const options = new Headers({
+      Authorization: authorization[1],
+      'Content-Type': 'application/json'
+    })
+
+    try {
+      const response = await fetch(`${this.baseUrl}/homework/create`, {
+        method: 'POST',
+        headers: options,
+        body: JSON.stringify({
+          subject: homework.subject,
+          teacher: homework.teacher,
+          text: homework.text,
+          dateDue: homework.dateDue
+        })
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
+    }
+  }
+
 }
 
 const apiService = new ApiService('https://api.hausaufgaben.live/api')
