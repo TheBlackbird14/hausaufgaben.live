@@ -21,7 +21,7 @@ async function createHomework() {
   let fields;
 
   if (form) {
-    fields = form.querySelectorAll('input, textarea')
+    fields = form.querySelectorAll('input, textarea') as unknown as HTMLFormElement
   } else {
     return
   }
@@ -30,7 +30,7 @@ async function createHomework() {
   let valid = true
 
 
-  fields.forEach((field) => {
+ fields.forEach((field: HTMLFormElement) => {
 
     field.classList.remove('is-invalid')
     field.classList.remove('is-valid')
