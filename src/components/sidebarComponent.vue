@@ -30,7 +30,7 @@ const emit = defineEmits(['toggle', 'reload'])
             class="logo rounded-3"
             src="/src/assets/UntisHomeworkLogo.png"
             alt="logo"
-            height="100"
+            height="80"
           />
         </div>
 
@@ -60,7 +60,7 @@ const emit = defineEmits(['toggle', 'reload'])
         </div>
       </div>
 
-            <theme-button />
+      <theme-button />
     </div>
   </body>
 </template>
