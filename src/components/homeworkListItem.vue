@@ -11,7 +11,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'delete'])
 
 const divClass = computed(() => {
   const tomorrow = new Date()
@@ -63,6 +63,23 @@ function complete() {
 
   emit('update', props.homeworkEntry?.id, array)
 }
+
+function deleteHomework() {
+  apiService.deleteHomework(props.homeworkEntry?.id)
+
+  let array: number
+
+  if (!props.homeworkEntry.completed) {
+    array = 1
+  } else if (props.homeworkEntry.completed && props.homeworkEntry?.dateDue > new Date()) {
+    array = 2
+  } else {
+    array = 3
+  }
+
+  emit('delete', props.homeworkEntry?.id, array)
+}
+
 </script>
 
 <template>
@@ -83,7 +100,7 @@ function complete() {
       <button class="btn btn-lg" :class="buttonClass" @click="complete">{{ buttonText }}</button>
     </div>
     <div class="p-2 text-center" :class="{ hidden: props.homeworkEntry?.id > 0 }">
-      <i class="bi bi-trash3"></i>
+      <i class="bi bi-trash3 delete" @click="deleteHomework"></i>
     </div>
   </div>
 </template>
@@ -118,4 +135,11 @@ function complete() {
 .hidden {
   visibility: hidden;
 }
+
+.delete {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: darkred;
+}
+
 </style>

@@ -150,6 +150,34 @@ function onChange(id: number, array: number) {
       break
   }
 }
+
+function onDelete(id: number, array: number) {
+  let index: number
+
+  switch (array) {
+    case 1: //uncompleted
+      index = uncompleted_homework.homeworkEntries.findIndex((homework) => homework.id === id)
+
+      uncompleted_homework.homeworkEntries.splice(index, 1)
+
+      break
+
+    case 2: //completed
+      index = completed_homework.homeworkEntries.findIndex((homework) => homework.id === id)
+
+      completed_homework.homeworkEntries.splice(index, 1)
+
+      break
+
+    case 3: //old
+      index = old_entries.homeworkEntries.findIndex((homework) => homework.id === id)
+
+      old_entries.homeworkEntries.splice(index, 1)
+
+      break
+  }
+}
+
 </script>
 
 <template>
@@ -158,7 +186,7 @@ function onChange(id: number, array: number) {
     <div
       v-if="!dataIsHere"
       class="d-flex justify-content-center align-items-center"
-      style="height: 80vh"
+      style="height: 100vh"
     >
       <div class="spinner-border spinner" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -173,7 +201,7 @@ function onChange(id: number, array: number) {
           <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">
             {{ getWeekDay(homeworkEntry) }}
           </h2>
-          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
+          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
         </div>
       </div>
 
@@ -185,14 +213,14 @@ function onChange(id: number, array: number) {
             <h2 v-if="compareDate(homeworkEntry, true)" class="day-title">
               {{ getWeekDay(homeworkEntry) }}
             </h2>
-            <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
+            <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
           </div>
         </div>
 
         <h2 v-if="old_entries.homeworkEntries.length" class="day-title">Alte Einträge</h2>
 
         <div v-for="(homeworkEntry, key) in old_entries.homeworkEntries" :key="key">
-          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange"></HomeworkListItem>
+          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
         </div>
       </div>
     </div>
@@ -216,11 +244,9 @@ h1 {
 .spinner {
   width: 5rem;
   height: 5rem;
-}
-
-.spinner {
   color: var(--text-primary-color);
 }
+
 
 .day-title {
   font-size: 130%;
