@@ -9,7 +9,7 @@ const loading = ref(false)
 const subject = ref('')
 const teacher = ref('')
 const assignment = ref('')
-const dateDue = ref('')
+const dateDue = ref(new Date().toISOString().split('T')[0])
 
 async function createHomework() {
   const form = document.getElementById('needs-validation')
