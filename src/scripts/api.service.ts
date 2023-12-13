@@ -1,6 +1,7 @@
 import storageService from '@/scripts/storage.service'
 import type { homework } from '@/scripts/types/homework.interface'
 import type { createHomeworkDto } from '@/scripts/types/create-homework.dto'
+import type { foodScheduleEntry } from '@/scripts/types/food-schedule.interface'
 
 class ApiService {
   private readonly baseUrl: string
@@ -165,9 +166,40 @@ class ApiService {
       throw e
     }
   }
+
+  async getFood(): Promise<foodScheduleEntry[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/food/latest`, {
+        method: 'GET'
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+
+      const data: foodScheduleEntry[] = await response.json()
+
+      const foodSchedule: foodScheduleEntry[] = []
+
+      data.forEach((element) => {
+        const newHomework: foodScheduleEntry = {
+          id: element.id,
+          text: element.text,
+          date: new Date(element.date)
+        }
+
+        foodSchedule.push(newHomework)
+      })
+
+      return foodSchedule
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
+    }
+  }
 }
 
-const apiService = new ApiService('https://api.hausaufgaben.live/api')
-// const apiService = new ApiService('http://localhost:3000/api')
+// const apiService = new ApiService('https://api.hausaufgaben.live/api')
+const apiService = new ApiService('http://localhost:3000/api')
 
 export default apiService

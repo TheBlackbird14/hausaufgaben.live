@@ -44,20 +44,24 @@ const emit = defineEmits(['toggle', 'reload'])
       </header>
 
       <div class="d-flex flex-column text-center mt-4">
-        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
-          <i class="bi bi-pencil"></i>
-          <h2>Hausaufgaben</h2>
-        </div>
+        <router-link to="/" style="text-decoration: none" @click="emit('toggle')">
+          <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+            <i class="bi bi-pencil"></i>
+            <h2>Hausaufgaben</h2>
+          </div>
+        </router-link>
 
         <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
           <i class="bi bi-calendar3"></i>
           <h2>Stundenplan</h2>
         </div>
 
-        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
-          <i class="bi bi-cup-hot"></i>
-          <h2>Mensaplan</h2>
-        </div>
+        <router-link to="/mensa" style="text-decoration: none" @click="emit('toggle')">
+          <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+            <i class="bi bi-cup-hot"></i>
+            <h2>Mensaplan</h2>
+          </div>
+        </router-link>
       </div>
 
       <theme-button />
