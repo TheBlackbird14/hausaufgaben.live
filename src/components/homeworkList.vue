@@ -177,7 +177,6 @@ function onDelete(id: number, array: number) {
       break
   }
 }
-
 </script>
 
 <template>
@@ -201,7 +200,11 @@ function onDelete(id: number, array: number) {
           <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">
             {{ getWeekDay(homeworkEntry) }}
           </h2>
-          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
+          <HomeworkListItem
+            :homework-entry="homeworkEntry"
+            @update="onChange"
+            @delete="onDelete"
+          ></HomeworkListItem>
         </div>
       </div>
 
@@ -213,14 +216,22 @@ function onDelete(id: number, array: number) {
             <h2 v-if="compareDate(homeworkEntry, true)" class="day-title">
               {{ getWeekDay(homeworkEntry) }}
             </h2>
-            <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
+            <HomeworkListItem
+              :homework-entry="homeworkEntry"
+              @update="onChange"
+              @delete="onDelete"
+            ></HomeworkListItem>
           </div>
         </div>
 
         <h2 v-if="old_entries.homeworkEntries.length" class="day-title">Alte Einträge</h2>
 
         <div v-for="(homeworkEntry, key) in old_entries.homeworkEntries" :key="key">
-          <HomeworkListItem :homework-entry="homeworkEntry" @update="onChange" @delete="onDelete"></HomeworkListItem>
+          <HomeworkListItem
+            :homework-entry="homeworkEntry"
+            @update="onChange"
+            @delete="onDelete"
+          ></HomeworkListItem>
         </div>
       </div>
     </div>
@@ -234,7 +245,8 @@ function onDelete(id: number, array: number) {
   background-color: var(--background-color-primary);
 }
 
-h1 {
+h1,
+h2 {
   color: var(--text-primary-color);
 
   margin: 0 1vw 1vw;
@@ -246,7 +258,6 @@ h1 {
   height: 5rem;
   color: var(--text-primary-color);
 }
-
 
 .day-title {
   font-size: 130%;

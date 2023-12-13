@@ -9,6 +9,4 @@ import CreateHomeworkForm from '@/components/createHomeworkForm.vue'
   <CreateHomeworkForm class="mt-4"></CreateHomeworkForm>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

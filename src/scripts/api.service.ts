@@ -1,6 +1,6 @@
 import storageService from '@/scripts/storage.service'
 import type { homework } from '@/scripts/types/homework.interface'
-import type {createHomeworkDto} from "@/scripts/types/create-homework.dto";
+import type { createHomeworkDto } from '@/scripts/types/create-homework.dto'
 
 class ApiService {
   private readonly baseUrl: string
@@ -165,7 +165,6 @@ class ApiService {
       throw e
     }
   }
-
 }
 
 const apiService = new ApiService('https://api.hausaufgaben.live/api')

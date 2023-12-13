@@ -120,14 +120,10 @@ async function createHomework() {
       </div>
 
       <div class="d-flex justify-content-between">
-
         <button type="button" class="btn btn-danger" @click="router.back()">Abbrechen</button>
 
         <button type="submit" class="btn btn-primary" id="submit">Hausaufgabe erstellen</button>
       </div>
-
-
-
     </form>
   </div>
 </template>
@@ -139,7 +135,6 @@ form {
 }
 
 .body {
-
   background-color: var(--background-color-primary);
 }
 

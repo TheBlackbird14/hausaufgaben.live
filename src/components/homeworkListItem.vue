@@ -79,7 +79,6 @@ function deleteHomework() {
 
   emit('delete', props.homeworkEntry?.id, array)
 }
-
 </script>
 
 <template>
@@ -141,5 +140,4 @@ function deleteHomework() {
   cursor: pointer;
   color: darkred;
 }
-
 </style>
