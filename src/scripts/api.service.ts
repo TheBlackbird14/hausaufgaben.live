@@ -199,7 +199,7 @@ class ApiService {
   }
 }
 
-// const apiService = new ApiService('https://api.hausaufgaben.live/api')
-const apiService = new ApiService('http://localhost:3000/api')
+const apiService = new ApiService('https://api.hausaufgaben.live/api')
+// const apiService = new ApiService('http://localhost:3000/api')
 
 export default apiService

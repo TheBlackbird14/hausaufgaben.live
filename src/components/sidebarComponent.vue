@@ -62,9 +62,22 @@ const emit = defineEmits(['toggle', 'reload'])
             <h2>Mensaplan</h2>
           </div>
         </router-link>
+
+        <br>
+        <br>
+
+        <div class="menu-item p-2 d-flex flex-row text-center justify-content-between">
+          <h3>Erscheinung</h3>
+          <theme-button></theme-button>
+        </div>
+
+        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+          <i class="bi bi-gear"></i>
+          <h2>Einstellungen</h2>
+        </div>
+
       </div>
 
-      <theme-button />
     </div>
   </body>
 </template>
@@ -113,11 +126,17 @@ i {
   color: var(--text-primary-color);
 }
 
-h2 {
+h2, h3 {
   color: var(--text-primary-color);
 
   margin: 0;
   padding-left: 2rem;
+}
+
+h3 {
+  color: var(--text-primary-color);
+
+  padding-left: 1rem;
 }
 
 .shader {

@@ -40,8 +40,8 @@ function getMediaPreference() {
   <div>
     <input @change="toggleTheme" id="checkbox" type="checkbox" class="switch-checkbox" />
     <label for="checkbox" class="switch-label">
-      <span>🌙</span>
-      <span>☀️</span>
+      <span></span>
+      <span>️</span>
       <div
         class="switch-toggle"
         :class="{ 'switch-toggle-checked': userTheme === 'dark-theme' }"
@@ -64,12 +64,12 @@ function getMediaPreference() {
   cursor: pointer;
   display: flex;
   font-size: calc(var(--element-size) * 0.3);
-  height: calc(var(--element-size) * 0.35);
+  height: calc(var(--element-size) * 0.6);
   position: relative;
   padding: calc(var(--element-size) * 0.1);
   transition: background 0.5s ease;
   justify-content: space-between;
-  width: var(--element-size);
+  width: calc(var(--element-size) * 1.2);
   z-index: 1;
 }
 
