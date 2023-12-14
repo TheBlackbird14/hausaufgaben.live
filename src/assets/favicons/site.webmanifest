@@ -1,0 +1,14 @@
+{
+    "name": "Untis Homework",
+    "short_name": "Untis Homework",
+    "icons": [
+        {
+            "src": "/assets/favicons/android-chrome-192x192.png?v=3",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#f5922f",
+    "background_color": "#f5922f",
+    "display": "standalone"
+}
