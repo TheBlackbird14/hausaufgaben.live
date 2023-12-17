@@ -6,44 +6,40 @@ import storageService from '@/scripts/storage.service'
 
 const password_visible = ref(false)
 
-const iconClass = ref("visible-icon bi bi-eye")
-const passwordType = ref("password")
+const iconClass = ref('visible-icon bi bi-eye')
+const passwordType = ref('password')
 function togglePassword() {
-
   password_visible.value = !password_visible.value
   if (password_visible.value) {
-    passwordType.value = "text"
+    passwordType.value = 'text'
     iconClass.value = 'visible-icon bi bi-eye-slash'
   } else {
-    passwordType.value = "password"
+    passwordType.value = 'password'
     iconClass.value = 'visible-icon bi bi-eye'
   }
-
 }
 
 const username = ref('')
 
 const password = ref('')
 
-const usernameClass = ref("form-control")
-const passwordClass = ref("form-control")
+const usernameClass = ref('form-control')
+const passwordClass = ref('form-control')
 
 function login() {
-
-  usernameClass.value = "form-control"
-  passwordClass.value = "form-control"
+  usernameClass.value = 'form-control'
+  passwordClass.value = 'form-control'
 
   if (username.value === '') {
-    usernameClass.value = "form-control is-invalid"
+    usernameClass.value = 'form-control is-invalid'
     if (password.value === '') {
-      passwordClass.value = "form-control is-invalid"
+      passwordClass.value = 'form-control is-invalid'
     }
-    return;
-
+    return
   }
   if (password.value === '') {
-    passwordClass.value = "form-control is-invalid"
-    return;
+    passwordClass.value = 'form-control is-invalid'
+    return
   }
 
   console.log('button clicked')
@@ -52,7 +48,6 @@ function login() {
     apiService
       .load(username.value, password.value)
       .then(() => {
-
         console.log('login successful')
 
         storageService.store_credentials(username.value, password.value)
@@ -61,8 +56,8 @@ function login() {
       })
       .catch((error) => {
         if (error.message === '403') {
-          usernameClass.value = "form-control is-invalid"
-          passwordClass.value = "form-control is-invalid"
+          usernameClass.value = 'form-control is-invalid'
+          passwordClass.value = 'form-control is-invalid'
         }
       })
   }
@@ -72,24 +67,37 @@ function login() {
 <template>
   <form class="text-center">
     <div class="form-floating mb-3">
-      <input v-model="username" type="text" :class="usernameClass" id="floatingUsername" placeholder="username">
+      <input
+        v-model="username"
+        type="text"
+        :class="usernameClass"
+        id="floatingUsername"
+        placeholder="username"
+      />
       <label for="floatingUsername">Benutzername</label>
     </div>
     <div class="input-group mb-3">
-      <div class="form-floating flex-grow-1" >
-        <input v-model="password" :type="passwordType" :class="passwordClass" id="floatingPassword" placeholder="password" @keyup.enter="login">
+      <div class="form-floating flex-grow-1">
+        <input
+          v-model="password"
+          :type="passwordType"
+          :class="passwordClass"
+          id="floatingPassword"
+          placeholder="password"
+          @keyup.enter="login"
+        />
         <label for="floatingPassword" class="user-select-none">Passwort</label>
       </div>
       <span class="input-group-text" :class="iconClass" @click="togglePassword"></span>
     </div>
 
-    <button type="button" class="btn btn-primary login-button btn-lg mt-4" @click="login">Login</button>
-
+    <button type="button" class="btn btn-primary login-button btn-lg mt-4" @click="login">
+      Login
+    </button>
   </form>
 </template>
 
 <style scoped>
-
 .visible-icon {
   cursor: pointer;
 }
@@ -97,5 +105,4 @@ function login() {
 .login-button {
   width: 80%;
 }
-
 </style>

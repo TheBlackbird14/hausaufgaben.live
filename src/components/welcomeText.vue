@@ -19,17 +19,32 @@
 }
 
 .welcome-header > * {
-  margin: auto;
+  margin: 0;
 }
 
 .welcome-header > h1 {
   font-size: 1.9rem;
   font-weight: bold;
   font-family: Helvetica, sans-serif;
+
+  text-align: center;
+  color: var(--text-primary-color);
 }
 
 .logo {
-  height: 10vmin;
+  width: 15%;
+
   pointer-events: none;
+}
+
+@media (max-width: 800px) {
+  .welcome-header {
+    flex-direction: column;
+  }
+
+  .welcome-header > h1 {
+    margin-top: 1em;
+    font-size: 1rem;
+  }
 }
 </style>

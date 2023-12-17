@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import welcome from '../components/welcome.vue'
+import welcome from '../components/welcomeText.vue'
 import enterLogin from '../components/enterLogin.vue'
 </script>
 
@@ -14,6 +14,8 @@ import enterLogin from '../components/enterLogin.vue'
 .container {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
+
+  column-gap: 5rem;
 
   justify-content: space-between;
   align-items: center;
