@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { foodScheduleEntry } from '@/scripts/types/food-schedule.interface'
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   foodEntry: {
