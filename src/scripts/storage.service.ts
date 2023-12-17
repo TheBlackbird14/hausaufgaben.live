@@ -87,6 +87,11 @@ class StorageService {
       return [username, credentials]
     }
   }
+
+  async logout() {
+    localStorage.removeItem('username')
+    localStorage.removeItem('credentials')
+  }
 }
 
 const storageService = new StorageService()

@@ -21,11 +21,6 @@ const old_entries = reactive({
 let latest_uncompleted_date: Date = new Date()
 let latest_completed_date: Date = new Date()
 
-function logout() {
-  localStorage.removeItem('credentials')
-  localStorage.removeItem('username')
-}
-
 onBeforeMount(() => {
   getHomework()
 })
@@ -235,8 +230,6 @@ function onDelete(id: number, array: number) {
         </div>
       </div>
     </div>
-
-    <button class="btn btn-danger" @click="logout">Logout</button>
   </div>
 </template>
 
