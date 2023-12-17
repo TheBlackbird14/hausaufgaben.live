@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import storageService from '@/scripts/storage.service'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,21 +27,8 @@ const router = createRouter({
       path: '/settings',
       name: 'Einstellungen',
       component: () => import('../views/SettingsView.vue')
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: () => import('../views/LoginView.vue')
     }
   ]
-})
-
-router.beforeEach((to, from) => {
-  if (from.path !== '/login' && storageService.retrieve_credentials() === null) {
-    return '/login'
-  } else {
-    return true
-  }
 })
 
 export default router
