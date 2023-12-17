@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import themeButton from '@/components/themeButton.vue'
+import storageService from '@/scripts/storage.service'
 
 defineProps({
   visible: {
@@ -9,6 +10,12 @@ defineProps({
 })
 
 const emit = defineEmits(['toggle', 'reload'])
+
+async function logout() {
+  await storageService.logout()
+
+  location.reload()
+}
 </script>
 
 <template>
@@ -51,10 +58,12 @@ const emit = defineEmits(['toggle', 'reload'])
           </div>
         </router-link>
 
-        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
-          <i class="bi bi-calendar3"></i>
-          <h2>Stundenplan</h2>
-        </div>
+        <router-link to="/stundenplan" style="text-decoration: none" @click="emit('toggle')">
+          <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+            <i class="bi bi-calendar3"></i>
+            <h2>Stundenplan</h2>
+          </div>
+        </router-link>
 
         <router-link to="/mensa" style="text-decoration: none" @click="emit('toggle')">
           <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
@@ -63,21 +72,30 @@ const emit = defineEmits(['toggle', 'reload'])
           </div>
         </router-link>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
         <div class="menu-item p-2 d-flex flex-row text-center justify-content-between">
           <h3>Erscheinung</h3>
           <theme-button></theme-button>
         </div>
 
-        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
-          <i class="bi bi-gear"></i>
-          <h2>Einstellungen</h2>
-        </div>
-
+        <router-link to="/settings" style="text-decoration: none" @click="emit('toggle')">
+          <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+            <i class="bi bi-gear"></i>
+            <h2>Einstellungen</h2>
+          </div>
+        </router-link>
       </div>
 
+      <div
+        class="menu-item p-2 d-flex flex-row text-center mb-0 logout"
+        @click="logout"
+        style="cursor: pointer"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        <h2 @click="logout">Logout</h2>
+      </div>
     </div>
   </body>
 </template>
@@ -126,7 +144,8 @@ i {
   color: var(--text-primary-color);
 }
 
-h2, h3 {
+h2,
+h3 {
   color: var(--text-primary-color);
 
   margin: 0;
@@ -137,6 +156,10 @@ h3 {
   color: var(--text-primary-color);
 
   padding-left: 1rem;
+}
+.logout {
+  position: relative;
+  bottom: 0;
 }
 
 .shader {
