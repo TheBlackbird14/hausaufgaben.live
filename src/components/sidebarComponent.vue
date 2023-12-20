@@ -75,8 +75,9 @@ async function logout() {
         <br />
         <br />
 
-        <div class="menu-item p-2 d-flex flex-row text-center justify-content-between">
-          <h3>Erscheinung</h3>
+        <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+          <i class="bi bi-moon"></i>
+          <h2 class="flex-grow-1 text-start">Erscheinung</h2>
           <theme-button></theme-button>
         </div>
 
@@ -157,6 +158,7 @@ h3 {
 
   padding-left: 1rem;
 }
+
 .logout {
   position: relative;
   bottom: 0;
