@@ -78,6 +78,26 @@ function getWeekDay(homeworkToCheck: homework) {
   return weekdays[homeworkToCheck.dateDue.getDay()]
 }
 
+function getDaysLeftString(date: Date) {
+  const today = new Date()
+
+  const difference = date.getTime() - today.getTime()
+
+  const calcDiff =  Math.ceil(difference / (1000 * 3600 * 24))
+
+  if (calcDiff === 1) {
+    return 'Morgen'
+  } else if (calcDiff === 0) {
+    return 'Heute'
+  } else if (calcDiff === -1) {
+    return 'Gestern'
+  } else if (calcDiff < -1) {
+    return 'Vor ' + Math.abs(calcDiff) + ' Tagen'
+  } else {
+    return 'In ' + calcDiff + ' Tagen'
+  }
+
+}
 /*
 id: number; The id of the entry
 array: number; the array it is in, uncompleted (1), completed (2) or old (3)
@@ -193,7 +213,7 @@ function onDelete(id: number, array: number) {
 
         <div v-for="(homeworkEntry, key) in uncompleted_homework.homeworkEntries" :key="key">
           <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">
-            {{ getWeekDay(homeworkEntry) }}
+            {{ getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')' }}
           </h2>
           <HomeworkListItem
             :homework-entry="homeworkEntry"
@@ -209,7 +229,7 @@ function onDelete(id: number, array: number) {
         <div v-for="(homeworkEntry, key) in completed_homework.homeworkEntries" :key="key">
           <div v-if="!isDatePast(homeworkEntry)">
             <h2 v-if="compareDate(homeworkEntry, true)" class="day-title">
-              {{ getWeekDay(homeworkEntry) }}
+              {{ getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')' }}
             </h2>
             <HomeworkListItem
               :homework-entry="homeworkEntry"
