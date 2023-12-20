@@ -83,7 +83,7 @@ function getDaysLeftString(date: Date) {
 
   const difference = date.getTime() - today.getTime()
 
-  const calcDiff =  Math.ceil(difference / (1000 * 3600 * 24))
+  const calcDiff = Math.ceil(difference / (1000 * 3600 * 24))
 
   if (calcDiff === 1) {
     return 'Morgen'
@@ -96,7 +96,6 @@ function getDaysLeftString(date: Date) {
   } else {
     return 'In ' + calcDiff + ' Tagen'
   }
-
 }
 /*
 id: number; The id of the entry
@@ -229,7 +228,9 @@ function onDelete(id: number, array: number) {
         <div v-for="(homeworkEntry, key) in completed_homework.homeworkEntries" :key="key">
           <div v-if="!isDatePast(homeworkEntry)">
             <h2 v-if="compareDate(homeworkEntry, true)" class="day-title">
-              {{ getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')' }}
+              {{
+                getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')'
+              }}
             </h2>
             <HomeworkListItem
               :homework-entry="homeworkEntry"
