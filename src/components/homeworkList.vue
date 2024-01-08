@@ -223,7 +223,7 @@ function onDelete(id: number, array: number) {
       </div>
 
       <div class="completed">
-        <h1>Abgeschlossen</h1>
+        <h1 v-if="completed_homework.homeworkEntries.length">Abgeschlossen</h1>
 
         <div v-for="(homeworkEntry, key) in completed_homework.homeworkEntries" :key="key">
           <div v-if="!isDatePast(homeworkEntry)">
