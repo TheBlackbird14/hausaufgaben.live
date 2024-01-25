@@ -210,16 +210,23 @@ function onDelete(id: number, array: number) {
       <div class="uncompleted">
         <h1>Unabgeschlossen</h1>
 
-        <div v-for="(homeworkEntry, key) in uncompleted_homework.homeworkEntries" :key="key">
-          <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">
-            {{ getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')' }}
-          </h2>
-          <HomeworkListItem
-            :homework-entry="homeworkEntry"
-            @update="onChange"
-            @delete="onDelete"
-          ></HomeworkListItem>
+        <div v-if="uncompleted_homework.homeworkEntries.length">
+          <div v-for="(homeworkEntry, key) in uncompleted_homework.homeworkEntries" :key="key">
+            <h2 v-if="compareDate(homeworkEntry, false)" class="day-title">
+              {{ getWeekDay(homeworkEntry) + ' (' + getDaysLeftString(homeworkEntry.dateDue) + ')' }}
+            </h2>
+            <HomeworkListItem
+              :homework-entry="homeworkEntry"
+              @update="onChange"
+              @delete="onDelete"
+            ></HomeworkListItem>
+          </div>
         </div>
+        <div v-else>
+          <h2 class="text-center h-100">Keine Hausaufgaben mehr!! 🎉🎉🎉</h2>
+        </div>
+
+
       </div>
 
       <div class="completed">
