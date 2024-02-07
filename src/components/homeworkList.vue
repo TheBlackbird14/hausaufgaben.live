@@ -93,6 +93,8 @@ function getDaysLeftString(date: Date) {
     return 'Gestern'
   } else if (calcDiff < -1) {
     return 'Vor ' + Math.abs(calcDiff) + ' Tagen'
+  } else if (calcDiff > 7) {
+    return date.toLocaleDateString('de-DE', { day: 'numeric', month: 'long' }) + ', In ' + calcDiff + ' Tagen'
   } else {
     return 'In ' + calcDiff + ' Tagen'
   }
