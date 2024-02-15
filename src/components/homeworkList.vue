@@ -47,14 +47,14 @@ function getHomework() {
 
 function compareDate(homeworkToCheck: homework, completed: boolean) {
   if (completed) {
-    if (homeworkToCheck.dateDue.getDate() !== latest_completed_date.getDate()) {
+    if (homeworkToCheck.dateDue.toISOString().split('T')[0] !== latest_completed_date.toISOString().split('T')[0]) {
       latest_completed_date = homeworkToCheck.dateDue
       return true
     } else {
       return false
     }
   } else {
-    if (homeworkToCheck.dateDue.getDate() !== latest_uncompleted_date.getDate()) {
+    if (homeworkToCheck.dateDue.toISOString().split('T')[0] !== latest_uncompleted_date.toISOString().split('T')[0]) {
       latest_uncompleted_date = homeworkToCheck.dateDue
       return true
     } else {
