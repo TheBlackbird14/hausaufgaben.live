@@ -25,7 +25,7 @@ import enterLogin from '../components/enterLogin.vue'
   width: 80vw;
 }
 
-@media (max-aspect-ratio: 4/3) {
+@media (max-aspect-ratio: 1/1) {
   .container {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
