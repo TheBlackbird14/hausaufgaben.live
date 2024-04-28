@@ -57,8 +57,7 @@
     </p>
     <br />
 
-    <!-- @vue-expect-error zaraz is a piece of cloudflare I use for Consent Management, the type doesn't exist here anywhere -->
-    <button type="button" class="btn btn-warning" @click="zaraz.showConsentModal()">
+    <button type="button" class="btn btn-warning" onclick="zaraz.showConsentModal()">
       Cookies bearbeiten
     </button>
   </div>
