@@ -22,7 +22,7 @@ try {
 </script>
 
 <template>
-  <LoginView v-if="!logged_in"></LoginView>
+  <LoginView v-if="!logged_in && $route.fullPath != '/About'"></LoginView>
 
   <router-view v-else></router-view>
 

@@ -115,6 +115,12 @@ function deleteHomework() {
   margin: 0;
 }
 
+h1,
+h2,
+p {
+  color: var(--bs-body-color);
+}
+
 .dueInFuture {
   background-color: rgba(252, 202, 100, 0.7);
 }

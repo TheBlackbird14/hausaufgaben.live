@@ -94,6 +94,10 @@ function login() {
     <button type="button" class="btn btn-primary login-button btn-lg mt-4" @click="login">
       Login
     </button>
+
+    <div class="mt-3">
+      <router-link to="/About" class="text-decoration-none">Info</router-link>
+    </div>
   </form>
 </template>
 

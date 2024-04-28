@@ -87,6 +87,13 @@ async function logout() {
             <h2>Einstellungen</h2>
           </div>
         </router-link>
+
+        <router-link to="/About" style="text-decoration: none" @click="emit('toggle')">
+          <div class="menu-item p-2 d-flex flex-row text-center align-items-center">
+            <i class="bi bi-info-circle"></i>
+            <h2>Info</h2>
+          </div>
+        </router-link>
       </div>
 
       <div
