@@ -259,7 +259,7 @@ function onDelete(id: number, array: number) {
     <div
       v-if="!dataIsHere && !old_dataisHere"
       class="d-flex justify-content-center align-items-center"
-      style="height: 8vh"
+      style="height: 100vh"
     >
       <div class="spinner-border spinner" role="status">
         <span class="visually-hidden">Loading...</span>

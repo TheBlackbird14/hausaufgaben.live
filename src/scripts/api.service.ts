@@ -68,6 +68,10 @@ class ApiService {
         homeworks.push(newHomework)
       })
 
+      const homework_string = JSON.stringify(homeworks)
+
+      localStorage.setItem('homework', homework_string)
+
       return homeworks
     } catch (e) {
       console.error('Error fetching data: ', e)
