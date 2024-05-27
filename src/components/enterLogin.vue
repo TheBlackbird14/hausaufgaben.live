@@ -5,6 +5,7 @@ import apiService from '@/scripts/api.service'
 import storageService from '@/scripts/storage.service'
 
 const password_visible = ref(false)
+const remember = ref(true)
 
 const iconClass = ref('visible-icon bi bi-eye')
 const passwordType = ref('password')
@@ -50,7 +51,7 @@ function login() {
       .then(() => {
         console.log('login successful')
 
-        storageService.store_credentials(username.value, password.value)
+        storageService.store_credentials(username.value, password.value, remember.value)
 
         location.reload()
       })
@@ -73,6 +74,7 @@ function login() {
         :class="usernameClass"
         id="floatingUsername"
         placeholder="username"
+        @keyup.enter="login"
       />
       <label for="floatingUsername">Benutzername</label>
     </div>
@@ -91,6 +93,17 @@ function login() {
       <span class="input-group-text" :class="iconClass" @click="togglePassword"></span>
     </div>
 
+    <div class="form-check text-start my-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="remember-me"
+        id="flexCheckDefault"
+        v-model="remember"
+      />
+      <label class="form-check-label" for="flexCheckDefault"> Angemeldet bleiben </label>
+    </div>
+
     <button type="button" class="btn btn-primary login-button btn-lg mt-4" @click="login">
       Login
     </button>
@@ -104,6 +117,10 @@ function login() {
 <style scoped>
 .visible-icon {
   cursor: pointer;
+}
+
+label {
+  color: var(--text-primary-color);
 }
 
 .login-button {

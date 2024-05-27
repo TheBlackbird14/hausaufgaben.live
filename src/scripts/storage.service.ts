@@ -65,21 +65,26 @@ class StorageService {
 
   /* now the good stuff */
 
-  async store_credentials(username: string, password: string) {
+  async store_credentials(username: string, password: string, remember: boolean) {
     /* removing legacy cookies from old website */
     localStorage.removeItem('username')
     localStorage.removeItem('password')
 
     const encrypted_credentials = await this.encryptString(username, password)
 
-    localStorage.setItem('username', username)
-    localStorage.setItem('credentials', encrypted_credentials)
+    if (remember) {
+      localStorage.setItem('username', username)
+      localStorage.setItem('credentials', encrypted_credentials)
+    } else {
+      sessionStorage.setItem('username', username)
+      sessionStorage.setItem('credentials', encrypted_credentials)
+    }
   }
 
   /* returns [username, credentials] or null */
   retrieve_credentials(): [string, string] | null {
-    const username = localStorage.getItem('username')
-    const credentials = localStorage.getItem('credentials')
+    const username = localStorage.getItem('username') || sessionStorage.getItem('username')
+    const credentials = localStorage.getItem('credentials') || sessionStorage.getItem('credentials')
 
     if (username === null || credentials === null) {
       return null
