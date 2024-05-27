@@ -47,15 +47,21 @@ function reload() {
     </div>
 
     <div class="p-2 me-1">
-      <i class="bi bi-list icon" @click="sidebarVisible = !sidebarVisible"></i>
+      <i class="bi bi-list icon" data-bs-toggle="offcanvas" data-bs-target="#sidebar"></i>
     </div>
   </header>
 
-  <Sidebar
-    :visible="sidebarVisible"
-    @toggle="sidebarVisible = !sidebarVisible"
-    @reload="reload"
-  ></Sidebar>
+  <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="sidebar"
+    aria-labelledby="sidebar"
+    :class="{ show: sidebarVisible }"
+    data-bs-backdrop="true"
+    data-bs-scroll="true"
+  >
+    <Sidebar @toggle="sidebarVisible = !sidebarVisible" @reload="reload"></Sidebar>
+  </div>
 </template>
 
 <style scoped>
@@ -77,5 +83,9 @@ header {
 a {
   text-decoration: none;
   color: white;
+}
+
+.offcanvas {
+  background-color: var(--background-color-primary);
 }
 </style>
