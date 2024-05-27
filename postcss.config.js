@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-undef
 const IN_PRODUCTION = process.env.NODE_ENV === "production";
 
+// eslint-disable-next-line no-undef
 module.exports = {
     plugins: [
         IN_PRODUCTION &&
+        // eslint-disable-next-line no-undef
         require("@fullhuman/postcss-purgecss")({
             content: [`./public/**/*.html`, `./src/**/*.vue`],
             defaultExtractor(content) {
