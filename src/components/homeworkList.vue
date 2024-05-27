@@ -3,9 +3,12 @@ import HomeworkListItem from '@/components/homeworkListItem.vue'
 import { onBeforeMount, reactive, ref } from 'vue'
 import apiService from '@/scripts/api.service'
 import type { homework } from '@/scripts/types/homework.interface'
+import storageService from '@/scripts/storage.service'
 
 let dataIsHere = ref(false)
-let old_dataisHere = ref(false)
+let old_dataIsHere = ref(false)
+
+const localHomeworkStorage = storageService.get_setting('localHomeworkStorage')
 
 defineExpose({ dataIsHere })
 
@@ -26,11 +29,10 @@ onBeforeMount(() => {
   getHomework()
 })
 
-function getHomework() {
-
+async function getHomework() {
   const old_data = localStorage.getItem('homework')
 
-  if (old_data) {
+  if (old_data && localHomeworkStorage) {
     const jsonData = JSON.parse(old_data)
 
     const parsedData = jsonData.map((element: homework) => {
@@ -60,36 +62,57 @@ function getHomework() {
       }
     })
 
-    old_dataisHere.value = true
+    old_dataIsHere.value = true
+    console.log('old_dataIsHere: ' + old_dataIsHere.value)
+  } else {
+    localStorage.removeItem('homework')
   }
 
-  apiService.all().then((response) => {
-    response.sort((a: homework, b: homework) => {
-      return +new Date(a.dateDue) - +new Date(b.dateDue)
-    })
+  let parsedData: homework[]
 
-    response.forEach((homework) => {
+  if (localHomeworkStorage) {
+    await apiService.all()
 
-      //check if the entry is already in any of the lists
-      if (
-        uncompleted_homework.homeworkEntries.find((element) => element.id === homework.id) ||
-        completed_homework.homeworkEntries.find((element) => element.id === homework.id) ||
-        old_entries.homeworkEntries.find((element) => element.id === homework.id)
-      ) {
-        return
+    const jsonData = JSON.parse(localStorage.getItem('homework') as string)
+
+    parsedData = jsonData.map((element: homework) => {
+      return {
+        id: element.id,
+        dateAdded: new Date(element.dateAdded),
+        dateDue: new Date(element.dateDue),
+        text: element.text,
+        remark: element.remark,
+        teacher: element.teacher,
+        subject: element.subject,
+        completed: element.completed
       }
+    })
+  } else {
+    parsedData = await apiService.all()
+  }
 
+  if (parsedData) {
+    let uncompleted_tmp: homework[] = []
+    let completed_tmp: homework[] = []
+    let old_tmp: homework[] = []
+
+    parsedData.forEach((homework: homework) => {
       if (!homework.completed) {
-        uncompleted_homework.homeworkEntries.push(homework)
+        uncompleted_tmp.push(homework)
       } else if (homework.dateDue > new Date()) {
-        completed_homework.homeworkEntries.push(homework)
+        completed_tmp.push(homework)
       } else {
-        old_entries.homeworkEntries.push(homework)
+        old_tmp.push(homework)
       }
     })
+
+    uncompleted_homework.homeworkEntries = uncompleted_tmp
+    completed_homework.homeworkEntries = completed_tmp
+    old_entries.homeworkEntries = old_tmp
 
     dataIsHere.value = true
-  })
+    console.log('dataIsHere: ' + dataIsHere.value)
+  }
 }
 
 function compareDate(homeworkToCheck: homework, completed: boolean) {
@@ -257,7 +280,7 @@ function onDelete(id: number, array: number) {
   <div class="body">
     <!-- Spinner using bootstrap-->
     <div
-      v-if="!dataIsHere && !old_dataisHere"
+      v-if="!dataIsHere && !old_dataIsHere"
       class="d-flex justify-content-center align-items-center"
       style="height: 100vh"
     >
@@ -266,16 +289,18 @@ function onDelete(id: number, array: number) {
       </div>
     </div>
 
-    <div v-if="old_dataisHere || dataIsHere">
+    <div v-if="old_dataIsHere || dataIsHere">
       <div class="uncompleted">
-
         <div class="d-flex justify-content-between align-items-center">
           <h1 class="mb-0">Unabgeschlossen</h1>
 
-          <div v-if="old_dataisHere && !dataIsHere" class="spinner-border spinner-small" role="status">
+          <div
+            v-if="old_dataIsHere && !dataIsHere"
+            class="spinner-border spinner-small"
+            role="status"
+          >
             <span class="visually-hidden">Loading...</span>
           </div>
-
         </div>
 
         <div v-if="uncompleted_homework.homeworkEntries.length">

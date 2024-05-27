@@ -1,15 +1,18 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="body">
     <header class="welcome-header">
       <img src="/src/assets/UntisHomeworkLogo.png" class="logo" alt="logo" />
       <h1>Webuntis Hausaufgaben</h1>
-
     </header>
 
-    <p>Hier kannst du deine Hausaufgaben von Webuntis ansehen und abhaken/erledigen. Du kannst auch selber welche hinzufügen und dir den Mensaplan ansehen. Melde dich einfach nur mit deinen Webuntis Anmeldedaten hier an  (Momentan nur verfügbar für Webuntis Aloisiuskolleg)</p>  </div>
+    <p>
+      Hier kannst du deine Hausaufgaben von Webuntis ansehen und abhaken/erledigen. Du kannst auch
+      selber welche hinzufügen und dir den Mensaplan ansehen. Melde dich einfach nur mit deinen
+      Webuntis Anmeldedaten hier an (Momentan nur verfügbar für Webuntis Aloisiuskolleg)
+    </p>
+  </div>
 </template>
 
 <style scoped>
@@ -51,5 +54,4 @@
 
   pointer-events: none;
 }
-
 </style>

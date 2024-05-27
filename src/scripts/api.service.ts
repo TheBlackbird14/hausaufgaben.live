@@ -68,9 +68,13 @@ class ApiService {
         homeworks.push(newHomework)
       })
 
-      const homework_string = JSON.stringify(homeworks)
+      homeworks.sort((a, b) => a.dateDue.getTime() - b.dateDue.getTime())
 
-      localStorage.setItem('homework', homework_string)
+      if (storageService.get_setting('localHomeworkStorage')) {
+        const homework_string = JSON.stringify(homeworks)
+
+        localStorage.setItem('homework', homework_string)
+      }
 
       return homeworks
     } catch (e) {
@@ -80,6 +84,10 @@ class ApiService {
   }
 
   async updateHomework(id: number, completed: boolean) {
+    if (storageService.get_setting('localHomeworkStorage')) {
+      storageService.update_homework(id, completed)
+    }
+
     const authorization = storageService.retrieve_credentials()
 
     if (authorization === null) {
@@ -111,6 +119,10 @@ class ApiService {
   }
 
   async deleteHomework(id: number) {
+    if (storageService.get_setting('localHomeworkStorage')) {
+      storageService.delete_homework(id)
+    }
+
     const authorization = storageService.retrieve_credentials()
 
     if (authorization === null) {
