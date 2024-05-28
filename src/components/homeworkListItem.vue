@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import {type PropType, ref} from 'vue'
 import type { homework } from '@/scripts/types/homework.interface'
 import { computed } from 'vue'
 import apiService from '@/scripts/api.service'
@@ -12,6 +12,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update', 'delete'])
+
+const mobileWidth = ref(window.screen.width <= 700)
 
 const divClass = computed(() => {
   const tomorrow = new Date()
@@ -84,14 +86,24 @@ function deleteHomework() {
 <template>
   <div
     class="d-flex justify-content-between align-items-center mb-3 align-middle list-item"
-    :class="divClass"
+    :class="[ divClass, {'flex-column': mobileWidth}]"
   >
-    <div class="p-2 col-sm-2">
+    <div v-if="mobileWidth" class="d-flex flex-row justify-content-between align-items-center align-middle">
+      <div class="p-2 col-sm-2">
+        <h1>{{ homeworkEntry.subject }}</h1>
+      </div>
+      <div class="p-2 col-sm-2">
+        <h1>{{ homeworkEntry.teacher }}</h1>
+      </div>
+    </div>
+
+    <div v-if="!mobileWidth" class="p-2 col-sm-2">
       <h1>{{ homeworkEntry.subject }}</h1>
     </div>
-    <div class="p-2 col-sm-2">
+    <div v-if="!mobileWidth" class="p-2 col-sm-2">
       <h2>{{ homeworkEntry.teacher }}</h2>
     </div>
+
     <div class="p-2 flex-lg-grow-1">
       <p class="fs-6">{{ homeworkEntry.text }}</p>
     </div>
