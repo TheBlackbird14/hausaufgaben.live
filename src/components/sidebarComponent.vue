@@ -19,7 +19,7 @@ async function logout() {
         @click="emit('reload')"
         data-bs-toggle="offcanvas"
         data-bs-target="#sidebar"
-        style="font-size: 250%; cursor: pointer; color"
+        style="font-size: 250%; cursor: pointer"
       ></i>
     </div>
 

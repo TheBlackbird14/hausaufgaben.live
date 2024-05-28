@@ -17,9 +17,11 @@ const props = defineProps({
   }
 })
 
+const sidebarVisible = ref(false)
 const mobileWidth = ref(window.screen.width <= 700)
 
 function reload() {
+  sidebarVisible.value = false
   emit('reload')
 }
 </script>
@@ -58,10 +60,11 @@ function reload() {
     tabindex="-1"
     id="sidebar"
     aria-labelledby="sidebar"
+    :class="{ show: sidebarVisible }"
     data-bs-backdrop="true"
     data-bs-scroll="true"
   >
-    <Sidebar @reload="reload"></Sidebar>
+    <Sidebar @toggle="sidebarVisible = !sidebarVisible" @reload="reload"></Sidebar>
   </div>
 </template>
 
@@ -101,5 +104,4 @@ a {
     visibility: hidden;
   }
 }
-
 </style>

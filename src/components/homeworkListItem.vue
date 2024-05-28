@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {type PropType, ref} from 'vue'
+import { type PropType, ref } from 'vue'
 import type { homework } from '@/scripts/types/homework.interface'
 import { computed } from 'vue'
 import apiService from '@/scripts/api.service'
@@ -86,9 +86,12 @@ function deleteHomework() {
 <template>
   <div
     class="d-flex justify-content-between align-items-center mb-3 align-middle list-item"
-    :class="[ divClass, {'flex-column': mobileWidth}]"
+    :class="[divClass, { 'flex-column': mobileWidth }]"
   >
-    <div v-if="mobileWidth" class="d-flex flex-row justify-content-between align-items-center align-middle">
+    <div
+      v-if="mobileWidth"
+      class="d-flex flex-row justify-content-between align-items-center align-middle"
+    >
       <div class="p-2 col-sm-2">
         <h1>{{ homeworkEntry.subject }}</h1>
       </div>
