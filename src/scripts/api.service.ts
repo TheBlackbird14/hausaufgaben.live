@@ -198,14 +198,17 @@ class ApiService {
       const foodSchedule: foodScheduleEntry[] = []
 
       data.forEach((element) => {
-        const newHomework: foodScheduleEntry = {
+        const newFood: foodScheduleEntry = {
           id: element.id,
           text: element.text,
-          date: new Date(element.date)
+          date: new Date(element.date),
+          probability: element.probability
         }
 
-        foodSchedule.push(newHomework)
+        foodSchedule.push(newFood)
       })
+
+      foodSchedule.sort((a, b) => a.id - b.id)
 
       return foodSchedule
     } catch (e) {

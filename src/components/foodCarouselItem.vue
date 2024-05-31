@@ -7,8 +7,15 @@ const props = defineProps({
   foodEntry: {
     type: Object as PropType<foodScheduleEntry>,
     required: true
+  },
+  selected: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 })
+
+const emit = defineEmits(['select'])
 
 function getWeekDay(date: Date) {
   const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
@@ -26,26 +33,26 @@ function dateToString(date: Date) {
 }
 
 const cardClass = computed(() => {
-  /*
-   * sorry for the wierd if statement
-   * basically it just checks if either
-   *
-   * */
+  let cardClass = 'card'
   if (
     (props.foodEntry?.date.getDate() === new Date().getDate() &&
       props.foodEntry.date > new Date()) ||
     (props.foodEntry?.date.getDate() === new Date().getDate() + 1 &&
       props.foodEntry.date.getHours() + 1 < new Date().getHours())
   ) {
-    return 'card card-active'
-  } else {
-    return 'card'
+    cardClass += ' card-active'
   }
+
+  if (props.selected) {
+    cardClass += ' card-selected'
+  }
+
+  return cardClass
 })
 </script>
 
 <template>
-  <div :class="cardClass">
+  <div :class="cardClass" @click="emit('select')">
     <div class="card-header">
       <h2 class="card-title text-center">{{ getWeekDay(props.foodEntry.date) }}</h2>
       <h4 class="card-subtitle mb-2 text-center">{{ dateToString(props.foodEntry.date) }}</h4>
@@ -74,6 +81,11 @@ p {
 }
 
 .card-active {
-  background-color: var(--background-color-primary);
+  border-bottom: 5px solid rgb(245, 146, 47);
+}
+
+.card-selected {
+  border-color: cornflowerblue;
+  border-width: 1px;
 }
 </style>
