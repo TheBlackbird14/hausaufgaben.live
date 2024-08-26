@@ -10,19 +10,60 @@ class ApiService {
     this.baseUrl = apiUrl
   }
 
-  async load(username: string, password: string) {
-    const authorization = await storageService.encryptString(username, password)
+  async login(username: string, password: string, stayLoggedIn: boolean) {
+    try {
+        const response = await fetch(`${this.baseUrl}/login`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            username: username,
+            password: password,
+            stayLoggedIn: stayLoggedIn
+            }),
+          credentials: 'include'
+        })
+
+        if (response.status === 401) {
+          await this.logout()
+          location.reload()
+        }
+
+        const data = await response.text()
+
+      console.log(data)
+
+    } catch (e) {
+      console.error('Error fetching data: ', e)
+      throw e
+    }
+
+  }
+
+  async logout() {
+    try {
+      await fetch(`${this.baseUrl}/logout`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+    } catch (e) {
+      console.error('Error logging out: ', e)
+      throw e
+    }
+  }
+
+  async load() {
 
     try {
       const response = await fetch(`${this.baseUrl}/homework/load`, {
         method: 'GET',
-        headers: {
-          Authorization: authorization
-        }
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -31,22 +72,20 @@ class ApiService {
   }
 
   async all(): Promise<homework[]> {
-    const authorization = storageService.retrieve_credentials()
 
-    if (authorization === null) {
-      throw new Error('403')
+    if (storageService.retrieve_username() === null) {
+      throw new Error('401')
     }
 
     try {
       const response = await fetch(`${this.baseUrl}/homework/all`, {
         method: 'GET',
-        headers: {
-          Authorization: authorization[1]
-        }
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
 
       const data: homework[] = await response.json()
@@ -88,16 +127,14 @@ class ApiService {
       storageService.update_homework(id, completed)
     }
 
-    const authorization = storageService.retrieve_credentials()
-
-    if (authorization === null) {
-      throw new Error('403')
+    if (storageService.retrieve_username() === null) {
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
-      Authorization: authorization[1],
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
 
     try {
@@ -106,11 +143,13 @@ class ApiService {
         headers: options,
         body: JSON.stringify({
           completed: completed
-        })
+        }),
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -123,14 +162,12 @@ class ApiService {
       storageService.delete_homework(id)
     }
 
-    const authorization = storageService.retrieve_credentials()
-
-    if (authorization === null) {
-      throw new Error('403')
+    if (storageService.retrieve_username() === null) {
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
-      Authorization: authorization[1],
       Accept: 'application/json',
       'Content-Type': 'application/json'
     })
@@ -138,11 +175,13 @@ class ApiService {
     try {
       const response = await fetch(`${this.baseUrl}/homework/delete/${id}`, {
         method: 'GET',
-        headers: options
+        headers: options,
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -151,14 +190,14 @@ class ApiService {
   }
 
   async createHomework(homework: createHomeworkDto) {
-    const authorization = storageService.retrieve_credentials()
 
-    if (authorization === null) {
-      throw new Error('403')
+
+    if (storageService.retrieve_username() === null) {
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
-      Authorization: authorization[1],
       'Content-Type': 'application/json'
     })
 
@@ -171,11 +210,13 @@ class ApiService {
           teacher: homework.teacher,
           text: homework.text,
           dateDue: homework.dateDue
-        })
+        }),
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -186,11 +227,13 @@ class ApiService {
   async getFood(): Promise<foodScheduleEntry[]> {
     try {
       const response = await fetch(`${this.baseUrl}/food/latest`, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
 
       const data: foodScheduleEntry[] = await response.json()
@@ -218,7 +261,7 @@ class ApiService {
   }
 }
 
-const apiService = new ApiService('https://api.hausaufgaben.live/api')
-// const apiService = new ApiService('http://localhost:3000/api')
+// const apiService = new ApiService('https://api.hausaufgaben.live/api')
+const apiService = new ApiService('http://localhost:3000/api')
 
 export default apiService
