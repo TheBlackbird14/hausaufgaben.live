@@ -9,9 +9,9 @@ import ThemeButton from '@/components/themeButton.vue'
 let logged_in = ref(false)
 
 try {
-  const credentials = storageService.retrieve_credentials()
 
-  if (credentials) {
+
+  if (storageService.retrieve_username()) {
     logged_in = ref(true)
   } else {
     logged_in = ref(false)

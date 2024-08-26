@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 
 import apiService from '@/scripts/api.service'
-import storageService from '@/scripts/storage.service'
 
 const password_visible = ref(false)
 const remember = ref(true)
@@ -47,12 +46,8 @@ function login() {
 
   if (username.value != '' && password.value != '') {
     apiService
-      .load(username.value, password.value)
+      .login(username.value, password.value, remember.value)
       .then(() => {
-        console.log('login successful')
-
-        storageService.store_credentials(username.value, password.value, remember.value)
-
         location.reload()
       })
       .catch((error) => {
