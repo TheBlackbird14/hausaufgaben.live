@@ -40,6 +40,23 @@ class ApiService {
 
   }
 
+  async logout() {
+    try {
+      const response = await fetch(`${this.baseUrl}/logout`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+
+      if (response.status === 403) {
+        throw new Error('403')
+      }
+
+    } catch (e) {
+      console.error('Error logging out: ', e)
+      throw e
+    }
+  }
+
   async load() {
 
     try {

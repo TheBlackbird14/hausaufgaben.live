@@ -1,3 +1,5 @@
+import apiService from "@/scripts/api.service";
+
 class StorageService {
   /* returns username or null */
   retrieve_username(): string | undefined {
@@ -11,12 +13,9 @@ class StorageService {
       localStorage.removeItem(setting)
     })
 
-    localStorage.removeItem('username')
-    localStorage.removeItem('credentials')
     localStorage.removeItem('homework')
 
-    sessionStorage.removeItem('username')
-    sessionStorage.removeItem('credentials')
+    await apiService.logout()
   }
 
   update_homework(id: number, completed: Boolean) {
