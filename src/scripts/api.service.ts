@@ -25,8 +25,9 @@ class ApiService {
           credentials: 'include'
         })
 
-        if (response.status === 403) {
-            throw new Error('403')
+        if (response.status === 401) {
+          await this.logout()
+          location.reload()
         }
 
         const data = await response.text()
@@ -42,15 +43,10 @@ class ApiService {
 
   async logout() {
     try {
-      const response = await fetch(`${this.baseUrl}/logout`, {
+      await fetch(`${this.baseUrl}/logout`, {
         method: 'GET',
         credentials: 'include'
       })
-
-      if (response.status === 403) {
-        throw new Error('403')
-      }
-
     } catch (e) {
       console.error('Error logging out: ', e)
       throw e
@@ -65,8 +61,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -77,7 +74,7 @@ class ApiService {
   async all(): Promise<homework[]> {
 
     if (storageService.retrieve_username() === null) {
-      throw new Error('403')
+      throw new Error('401')
     }
 
     try {
@@ -86,8 +83,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
 
       const data: homework[] = await response.json()
@@ -129,10 +127,9 @@ class ApiService {
       storageService.update_homework(id, completed)
     }
 
-
-
     if (storageService.retrieve_username() === null) {
-      throw new Error('403')
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
@@ -150,8 +147,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -164,10 +162,9 @@ class ApiService {
       storageService.delete_homework(id)
     }
 
-
-
     if (storageService.retrieve_username() === null) {
-      throw new Error('403')
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
@@ -182,8 +179,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -195,7 +193,8 @@ class ApiService {
 
 
     if (storageService.retrieve_username() === null) {
-      throw new Error('403')
+      await this.logout()
+      location.reload()
     }
 
     const options = new Headers({
@@ -215,8 +214,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
     } catch (e) {
       console.error('Error fetching data: ', e)
@@ -231,8 +231,9 @@ class ApiService {
         credentials: 'include'
       })
 
-      if (response.status === 403) {
-        throw new Error('403')
+      if (response.status === 401) {
+        await this.logout()
+        location.reload()
       }
 
       const data: foodScheduleEntry[] = await response.json()
