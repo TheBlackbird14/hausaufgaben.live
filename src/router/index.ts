@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Homework',
+      name: 'Hausaufgaben',
       component: () => import('../views/HomeworkView.vue')
     },
     {
@@ -30,10 +30,18 @@ const router = createRouter({
     },
     {
       path: '/about',
-      name: 'About',
+      name: 'Info',
       component: () => import('../views/AboutView.vue')
     }
   ]
+})
+
+router.beforeEach((to) => {
+  const title: string = to.name as string;
+
+  const defaultTitle = 'Webuntis Hausaufgaben';
+
+  document.title = title || defaultTitle;
 })
 
 export default router
